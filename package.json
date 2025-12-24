@@ -1,0 +1,20 @@
+{
+  "name": "cyber-suite",
+  "version": "1.0.0",
+  "description": "A comprehensive online suite for cryptographic functions including algorithm detection, hashing, symmetric encryption, and asymmetric key generation.",
+  "main": "index.html",
+  "scripts": {
+    "build-css": "tailwindcss build style.css -o output.css",
+    "watch-css": "tailwindcss build style.css -o output.css --watch",
+    "dev": "concurrently \"npm run watch-css\" \"npx serve .\"",
+    "start": "npx serve ."
+  },
+  "keywords": ["cybersecurity", "cryptography", "encryption", "hashing", "security-tools"],
+  "author": "Cyber Suite",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1",
+    "concurrently": "^8.2.2",
+    "serve": "^14.2.1"
+  }
+}

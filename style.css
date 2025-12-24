@@ -1,29 +1,45 @@
-body { background-color: #050505; color: #a0a0a0; }
-.glass-panel { background: rgba(17, 17, 27, 0.95); border: 1px solid #2a2a35; backdrop-filter: blur(10px); }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.cyber-input { background: #0a0a0f; border: 1px solid #333; color: #fff; font-family: 'JetBrains Mono'; transition: 0.2s; font-size: 0.85rem; }
-.cyber-input:focus { border-color: #00f0ff; outline: none; box-shadow: 0 0 8px rgba(0, 240, 255, 0.2); }
+@layer components {
+  body { background-color: #050505; color: #a0a0a0; }
+  .glass-panel { @apply bg-[rgba(17,17,27,0.95)] border border-[#2a2a35] backdrop-blur; }
+  
+  .cyber-input { @apply bg-[#0a0a0f] border border-[#333] text-white font-mono transition duration-200 text-sm; }
+  .cyber-input:focus { @apply border-[#00f0ff] outline-none shadow-[0_0_8px_rgba(0,240,255,0.2)]; }
+  
+  .btn-action { @apply transition duration-300 uppercase tracking-wider text-xs font-bold; }
+  .btn-action:hover { @apply shadow-[0_0_10px_currentColor] -translate-y-px; }
+  
+  .fade-in { @apply animate-fadeInUp; }
+  
+  .type-badge { @apply inline-block px-2 py-0.5 rounded text-[0.65rem] font-bold uppercase ml-2 align-middle border; }
+  .type-hash { @apply border-[#00f0ff] text-[#00f0ff] bg-[rgba(0,240,255,0.1)]; }
+  .type-pass { @apply border-[#bd00ff] text-[#bd00ff] bg-[rgba(189,0,255,0.1)]; }
+  .type-sym { @apply border-[#ff9d00] text-[#ff9d00] bg-[rgba(255,157,0,0.1)]; }
+  .type-asym { @apply border-[#0aff0a] text-[#0aff0a] bg-[rgba(10,255,10,0.1)]; }
+  .type-detect { @apply border-[#ff0099] text-[#ff0099] bg-[rgba(255,0,153,0.1)]; }
+  
+  .status-box { @apply hidden mt-2.5 p-2 rounded font-bold text-sm text-center; }
+  .status-success { @apply block bg-[rgba(10,255,10,0.1)] border border-[#0aff0a] text-[#0aff0a]; }
+  .status-error { @apply block bg-[rgba(255,42,42,0.1)] border border-[#ff2a2a] text-[#ff2a2a]; }
+  
+  .detect-result { @apply bg-black border border-[#333] p-3.5 rounded-sm mt-5 font-mono; }
+  .detect-label { @apply text-xs text-gray-500 uppercase tracking-wider mb-1; }
+  .detect-val { @apply text-sm text-white mb-3 border-b border-[#222] pb-3; }
+}
 
-.btn-action { transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; font-size: 0.75rem; font-weight: bold; }
-.btn-action:hover { box-shadow: 0 0 10px currentColor; transform: translateY(-1px); }
+@layer utilities {
+  .animate-fadeInUp {
+    animation: fadeInUp 0.4s ease-out forwards;
+  }
+}
 
-.fade-in { animation: fadeInUp 0.4s ease-out forwards; }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-.type-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; text-transform: uppercase; margin-left: 8px; vertical-align: middle; border: 1px solid; }
-.type-hash { border-color: #00f0ff; color: #00f0ff; background: rgba(0, 240, 255, 0.1); }
-.type-pass { border-color: #bd00ff; color: #bd00ff; background: rgba(189, 0, 255, 0.1); }
-.type-sym { border-color: #ff9d00; color: #ff9d00; background: rgba(255, 157, 0, 0.1); }
-.type-asym { border-color: #0aff0a; color: #0aff0a; background: rgba(10, 255, 10, 0.1); }
-.type-detect { border-color: #ff0099; color: #ff0099; background: rgba(255, 0, 153, 0.1); }
-
-.status-box { display: none; margin-top: 10px; padding: 8px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; text-align: center; }
-.status-success { display: block; background: rgba(10, 255, 10, 0.1); border: 1px solid #0aff0a; color: #0aff0a; }
-.status-error { display: block; background: rgba(255, 42, 42, 0.1); border: 1px solid #ff2a2a; color: #ff2a2a; }
-
-.detect-result { background: #000; border: 1px solid #333; padding: 15px; border-radius: 5px; margin-top: 20px; font-family: 'JetBrains Mono'; }
-.detect-label { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-.detect-val { font-size: 0.9rem; color: #fff; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 12px; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #050505; }
