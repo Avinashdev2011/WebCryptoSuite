@@ -11,8 +11,7 @@
     <meta name="author" content="Cyber Suite">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://yourwebsite.com/tools/cyber-suite">
-        <script src="https://cdn.tailwindcss.com"></script>
-
+    
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/x-icon" href="favicon.svg">
@@ -48,16 +47,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js"></script>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { mono: ['"JetBrains Mono"', 'monospace'] },
-                    colors: { cyber: { dark: '#050505', panel: '#11111b', border: '#2a2a35', cyan: '#00f0ff', green: '#0aff0a', red: '#ff2a2a', purple: '#bd00ff', orange: '#ff9d00', pink: '#ff0099', gray: '#8899ac' } }
-                }
-            }
-        }
-    </script>
+    <!-- Tailwind config is now in the built CSS file -->
     
     <!-- Vercel Analytics -->
     <script defer src="https://va.vercel.sh/script.js"></script>
@@ -272,5 +262,4 @@
     </main>
     <script src="script.js"></script>
 </body>
-
 </html>
