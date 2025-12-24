@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>Cyber Suite | Encryption Analyzer & Security Tools</title>
+    <meta name="description" content="Free online cryptography suite. Identify hash types, generate SHA-256 fingerprints, encrypt AES-256 messages, test bcrypt passwords, and generate RSA keys locally.">
+    <meta name="keywords" content="hash identifier, encryption analyzer, sha256 generator, aes encryption online, bcrypt hash checker, rsa key generator, cyber security tools, verify hash">
+    <meta name="author" content="Cyber Suite">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yourwebsite.com/tools/cyber-suite">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourwebsite.com/tools/cyber-suite">
+    <meta property="og:title" content="Cyber Suite - Ultimate Crypto Tools">
+    <meta property="og:description" content="Analyze hashes, encrypt messages, and test passwords securely in your browser.">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cyber Suite - Ultimate Crypto Tools">
+    <meta name="twitter:description" content="Identify algorithms and encrypt data securely online.">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Cyber Suite",
+      "url": "https://yourwebsite.com/tools/cyber-suite",
+      "description": "A comprehensive online suite for cryptographic functions including algorithm detection, hashing, symmetric encryption, and asymmetric key generation.",
+      "applicationCategory": "SecurityTool",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js"></script>
+
+        <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { mono: ['"JetBrains Mono"', 'monospace'] },
+                    colors: { cyber: { dark: '#050505', panel: '#11111b', border: '#2a2a35', cyan: '#00f0ff', green: '#0aff0a', red: '#ff2a2a', purple: '#bd00ff', orange: '#ff9d00', pink: '#ff0099', gray: '#8899ac' } }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Vercel Analytics -->
+    <script defer src="https://va.vercel.sh/script.js"></script>
+    
+    <!-- Google Analytics (Optional) -->
+    <!--
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    -->
+</head>
+<body class="font-mono h-screen flex overflow-hidden selection:bg-cyber-pink selection:text-white">
+
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+    <div id="mobileOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/80 z-20 hidden md:hidden backdrop-blur-sm"></div>
+
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-64 bg-cyber-panel border-r border-cyber-border flex flex-col z-30 transform -translate-x-full md:translate-x-0 transition-transform duration-300 shadow-2xl">
+        <header class="p-6 border-b border-cyber-border">
+            <h1 class="text-xl font-bold text-white tracking-wider flex items-center">
+                <span class="text-cyber-pink mr-2">>>></span> CYBER_SUITE
+            </h1>
+            <p class="text-[10px] text-gray-500 mt-1">V11.0 // SEO_READY</p>
+        </header>
+        
+        <nav class="flex-1 p-3 space-y-1 overflow-y-auto" role="navigation">
+            <button onclick="switchTab('detect')" id="nav-detect" class="nav-item w-full text-left px-4 py-3 rounded hover:bg-white/5 flex items-center border-l-2 border-transparent transition-colors mb-1">
+                <i class="fa-solid fa-magnifying-glass-chart w-5 text-gray-500"></i> <span class="text-sm font-bold text-gray-400 ml-3">IDENTIFIER</span>
+            </button>
+            <div class="h-px bg-cyber-border my-2"></div>
+            <button onclick="switchTab('hash')" id="nav-hash" class="nav-item w-full text-left px-4 py-3 rounded hover:bg-white/5 flex items-center border-l-2 border-transparent transition-colors mb-1">
+                <i class="fa-solid fa-hashtag w-5 text-gray-500"></i> <span class="text-sm font-bold text-gray-400 ml-3">HASHING</span>
+            </button>
+            <button onclick="switchTab('pass')" id="nav-pass" class="nav-item w-full text-left px-4 py-3 rounded hover:bg-white/5 flex items-center border-l-2 border-transparent transition-colors mb-1">
+                <i class="fa-solid fa-shield-halved w-5 text-gray-500"></i> <span class="text-sm font-bold text-gray-400 ml-3">PASSWORDS</span>
+            </button>
+            <button onclick="switchTab('sym')" id="nav-sym" class="nav-item w-full text-left px-4 py-3 rounded hover:bg-white/5 flex items-center border-l-2 border-transparent transition-colors mb-1">
+                <i class="fa-solid fa-lock w-5 text-gray-500"></i> <span class="text-sm font-bold text-gray-400 ml-3">SYMMETRIC</span>
+            </button>
+            <button onclick="switchTab('asym')" id="nav-asym" class="nav-item w-full text-left px-4 py-3 rounded hover:bg-white/5 flex items-center border-l-2 border-transparent transition-colors mb-1">
+                <i class="fa-solid fa-key w-5 text-gray-500"></i> <span class="text-sm font-bold text-gray-400 ml-3">ASYMMETRIC</span>
+            </button>
+            <div class="h-px bg-cyber-border my-2"></div>
+            <button onclick="switchTab('manual')" id="nav-manual" class="nav-item w-full text-left px-4 py-3 rounded hover:bg-white/5 flex items-center border-l-2 border-transparent transition-colors mb-1">
+                <i class="fa-solid fa-book w-5 text-gray-500"></i> <span class="text-sm font-bold text-gray-400 ml-3">MANUAL / SEO</span>
+            </button>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col relative bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+        
+        <div class="md:hidden flex items-center justify-between p-4 bg-cyber-panel border-b border-cyber-border z-10">
+            <span class="text-cyber-pink font-bold">CYBER_SUITE</span>
+            <button onclick="toggleSidebar()" class="text-white" aria-label="Toggle Menu"><i class="fa-solid fa-bars"></i></button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 lg:p-8 scroll-smooth relative">
+            
+            <section id="detect" class="tab-content fade-in" aria-labelledby="detect-head">
+                <header class="mb-6 border-b border-cyber-border pb-4">
+                    <h2 id="detect-head" class="text-2xl font-bold text-white mb-1">ALGORITHM_DETECTOR</h2>
+                    <span class="type-badge type-detect">TYPE: HEURISTIC ANALYSIS</span>
+                    <p class="text-xs text-gray-500 mt-2">Paste any string. System will attempt to identify if it is MD5, SHA, Bcrypt, or RSA.</p>
+                </header>
+                <div class="glass-panel p-6 rounded-lg shadow-lg border-l-2 border-cyber-pink">
+                    <label class="text-[10px] text-cyber-pink font-bold block mb-2">UNKNOWN STRING INPUT</label>
+                    <textarea id="detectInput" rows="4" class="cyber-input w-full p-4 rounded mb-4 text-sm" placeholder="Paste the mystery hash or ciphertext here..."></textarea>
+                    <button onclick="runDetect()" class="btn-action w-full py-3 bg-cyber-pink/10 border border-cyber-pink text-cyber-pink rounded hover:bg-cyber-pink hover:text-white transition">ANALYZE STRING</button>
+                    <div id="detectResults" class="hidden fade-in">
+                        <div class="detect-result">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div><div class="detect-label">Most Likely Algorithm</div><div id="resName" class="text-xl font-bold text-cyber-pink mb-4">...</div></div>
+                                <div><div class="detect-label">Confidence</div><div id="resConf" class="text-sm font-bold text-white mb-4">...</div></div>
+                            </div>
+                            <div class="detect-label">Length Analysis</div><div id="resLen" class="detect-val">...</div>
+                            <div class="detect-label">Character Set</div><div id="resChar" class="detect-val">...</div>
+                            <div class="detect-label">Security Note</div><div id="resNote" class="text-xs text-gray-400">...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="hash" class="tab-content hidden fade-in" aria-labelledby="hash-head">
+                <header class="mb-6 border-b border-cyber-border pb-4">
+                    <h2 id="hash-head" class="text-2xl font-bold text-white mb-1">HASH_GENERATOR</h2>
+                    <span class="type-badge type-hash">TYPE: ONE-WAY COMPRESSION</span>
+                </header>
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <div class="glass-panel p-5 rounded-lg shadow-lg">
+                        <h3 class="text-cyber-cyan font-bold text-sm mb-4">1. GENERATE</h3>
+                        <select id="hashAlgo" class="cyber-input w-full p-2 rounded mb-3">
+                            <option value="SHA256">SHA-256 (Standard)</option>
+                            <option value="SHA512">SHA-512 (Secure)</option>
+                            <option value="MD5">MD5 (Weak)</option>
+                        </select>
+                        <textarea id="hashInput" rows="2" class="cyber-input w-full p-3 rounded mb-3" placeholder="Input text..."></textarea>
+                        <button onclick="runHash()" class="btn-action w-full py-2 bg-cyber-cyan/10 border border-cyber-cyan text-cyber-cyan rounded">HASH IT</button>
+                        <div id="hashOutput" class="bg-black border border-gray-800 p-3 rounded text-xs text-cyber-green break-all mt-3 font-mono">...</div>
+                    </div>
+                    <div class="glass-panel p-5 rounded-lg border-t-2 border-t-white shadow-lg">
+                        <h3 class="text-white font-bold text-sm mb-4">2. VERIFY MATCH</h3>
+                        <input id="hashVerifyInput" class="cyber-input w-full p-2 rounded mb-3" placeholder="Paste hash here...">
+                        <button onclick="verifyHash()" class="btn-action w-full py-2 bg-gray-800 border border-gray-600 text-white rounded">COMPARE HASHES</button>
+                        <div id="hashStatus" class="status-box"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pass" class="tab-content hidden fade-in" aria-labelledby="pass-head">
+                <header class="mb-6 border-b border-cyber-border pb-4">
+                    <h2 id="pass-head" class="text-2xl font-bold text-white mb-1">PASSWORD_VAULT</h2>
+                    <span class="type-badge type-pass">TYPE: BCRYPT (SALTED)</span>
+                </header>
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <div class="glass-panel p-5 rounded-lg border-l-2 border-cyber-purple shadow-lg">
+                        <h3 class="text-cyber-purple font-bold text-sm mb-4">1. ENCRYPT</h3>
+                        <input type="text" id="passInput" class="cyber-input w-full p-3 rounded mb-3" placeholder="User Password">
+                        <button onclick="runPass()" class="btn-action w-full py-2 bg-cyber-purple/10 border border-cyber-purple text-cyber-purple rounded">GENERATE BCRYPT</button>
+                        <div id="passOutput" class="bg-black p-2 rounded text-xs text-white break-all border border-gray-800 mt-3">...</div>
+                    </div>
+                    <div class="glass-panel p-5 rounded-lg border-l-2 border-white shadow-lg">
+                        <h3 class="text-white font-bold text-sm mb-4">2. VALIDATE</h3>
+                        <input type="text" id="passVerifyHash" class="cyber-input w-full p-2 rounded mb-3 text-gray-400" placeholder="Paste Hash ($2a$...)">
+                        <input type="text" id="passVerifyInput" class="cyber-input w-full p-2 rounded mb-3" placeholder="Enter Password">
+                        <button onclick="verifyPass()" class="btn-action w-full py-2 bg-gray-800 border border-gray-600 text-white rounded">ATTEMPT LOGIN</button>
+                        <div id="passStatus" class="status-box"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sym" class="tab-content hidden fade-in" aria-labelledby="sym-head">
+                <header class="mb-6 border-b border-cyber-border pb-4">
+                    <h2 id="sym-head" class="text-2xl font-bold text-white mb-1">AES_ENCRYPTION</h2>
+                    <span class="type-badge type-sym">TYPE: BLOCK CIPHER</span>
+                </header>
+                <div class="glass-panel p-6 rounded-lg mb-6 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-xs font-bold text-cyber-orange mb-2">ENCRYPT</h4>
+                            <input type="text" id="symEncKey" class="cyber-input w-full p-2 mb-3 rounded text-cyber-orange border-cyber-orange/30" placeholder="Key...">
+                            <textarea id="symPlain" rows="2" class="cyber-input w-full p-3 rounded mb-3" placeholder="Message..."></textarea>
+                            <button onclick="runEncrypt()" class="btn-action w-full py-2 bg-cyber-orange/10 border border-cyber-orange text-cyber-orange rounded">ENCRYPT</button>
+                            <div id="symCipherOut" class="bg-black p-3 border border-gray-800 text-xs text-gray-400 break-all mt-2 min-h-[40px]">...</div>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-cyber-green mb-2">VERIFY MATCH</h4>
+                            <textarea id="symVerifyCipher" rows="2" class="cyber-input w-full p-2 rounded mb-2 text-gray-400" placeholder="Ciphertext..."></textarea>
+                            <input type="text" id="symVerifyKey" class="cyber-input w-full p-2 mb-2 rounded text-cyber-green border-cyber-green/30" placeholder="Key...">
+                            <input type="text" id="symVerifyMsg" class="cyber-input w-full p-2 mb-3 rounded" placeholder="Expected Message...">
+                            <button onclick="verifySym()" class="btn-action w-full py-2 bg-cyber-green/10 border border-cyber-green text-cyber-green rounded">VERIFY MATCH</button>
+                            <div id="symVerifyStatus" class="status-box text-left font-mono break-all text-xs"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="asym" class="tab-content hidden fade-in" aria-labelledby="asym-head">
+                <header class="mb-6 border-b border-cyber-border pb-4">
+                    <h2 id="asym-head" class="text-2xl font-bold text-white mb-1">RSA_SYSTEM</h2>
+                    <span class="type-badge type-asym">TYPE: PUBLIC-KEY CRYPTOGRAPHY</span>
+                </header>
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <div class="glass-panel p-4 rounded-lg shadow-lg">
+                        <button onclick="genKeys()" id="btnGen" class="btn-action w-full py-2 bg-white/10 border border-white text-white rounded mb-3 text-xs hover:bg-white/20">GENERATE PAIR</button>
+                        <div class="space-y-2">
+                            <textarea id="rsaPub" rows="4" readonly class="cyber-input w-full p-2 rounded text-[10px] text-gray-400" placeholder="Public Key..."></textarea>
+                            <textarea id="rsaPriv" rows="4" readonly class="cyber-input w-full p-2 rounded text-[10px] text-cyber-red border-cyber-red/30" placeholder="Private Key..."></textarea>
+                        </div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-lg border-t-2 border-cyber-orange shadow-lg">
+                        <h4 class="text-xs font-bold text-cyber-orange mb-2">ENCRYPT (Public)</h4>
+                        <input id="rsaPlain" class="cyber-input w-full p-2 rounded mb-2" placeholder="Message...">
+                        <button onclick="rsaEncrypt()" class="btn-action w-full py-2 bg-cyber-orange/10 border border-cyber-orange text-cyber-orange rounded mb-2">ENCRYPT</button>
+                        <textarea id="rsaCipher" rows="4" class="cyber-input w-full p-2 rounded text-[10px] text-gray-400" placeholder="Ciphertext Output..."></textarea>
+                    </div>
+                    <div class="glass-panel p-4 rounded-lg border-t-2 border-cyber-green shadow-lg">
+                        <h4 class="text-xs font-bold text-cyber-green mb-2">VERIFY (Private)</h4>
+                        <input id="rsaVerifyMsg" class="cyber-input w-full p-2 rounded mb-2" placeholder="Expected Message...">
+                        <button onclick="rsaVerify()" class="btn-action w-full py-2 bg-cyber-green/10 border border-cyber-green text-cyber-green rounded mb-2">DECRYPT & CHECK</button>
+                        <div id="rsaStatus" class="status-box text-left break-all font-mono text-[10px]"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="manual" class="tab-content hidden fade-in" aria-labelledby="manual-head">
+                <header class="mb-6 border-b border-cyber-border pb-4">
+                    <h2 id="manual-head" class="text-2xl font-bold text-white mb-1">SYSTEM_MANUAL</h2>
+                    <span class="type-badge" style="border-color:#888; color:#888; background:rgba(136,136,136,0.1)">DOCUMENTATION</span>
+                </header>
+                <article class="glass-panel p-8 rounded-lg text-gray-300 leading-relaxed max-w-4xl mx-auto">
+                    <h3 class="text-lg font-bold text-white mb-4">Online Cryptography Tools Guide</h3>
+                    <p class="mb-4 text-sm">Welcome to Cyber Suite, a secure client-side toolkit for cryptography analysis. All operations happen in your browser.</p>
+                    
+                    <h4 class="text-cyber-cyan font-bold text-sm mt-6 mb-2">Hashing (SHA-256 / MD5)</h4>
+                    <p class="text-xs mb-2">Hash functions are one-way algorithms that transform data into a fixed-size string. They are used for data integrity. MD5 is older and vulnerable to collisions, while SHA-256 is the industry standard for security.</p>
+
+                    <h4 class="text-cyber-purple font-bold text-sm mt-6 mb-2">Password Hashing (Bcrypt)</h4>
+                    <p class="text-xs mb-2">Bcrypt is designed specifically for passwords. It uses "salting" and "key stretching" to make brute-force attacks slow and difficult.</p>
+
+                    <h4 class="text-cyber-orange font-bold text-sm mt-6 mb-2">Symmetric Encryption (AES)</h4>
+                    <p class="text-xs mb-2">AES (Advanced Encryption Standard) requires a shared secret key. If you lose the key, the data cannot be recovered.</p>
+
+                    <h4 class="text-cyber-green font-bold text-sm mt-6 mb-2">Asymmetric Encryption (RSA)</h4>
+                    <p class="text-xs mb-2">RSA uses a Public Key for encryption and a Private Key for decryption. This allows secure communication between parties who have not met before.</p>
+                </article>
+            </section>
+
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
