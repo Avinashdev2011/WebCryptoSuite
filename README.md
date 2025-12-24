@@ -1,6 +1,6 @@
-# Cyber Suite - Encryption Analyzer & Security Tools
+# WebCryptoSuite - Encryption Analyzer & Security Tools
 
-A comprehensive online suite for cryptographic functions including algorithm detection, hashing, symmetric encryption, and asymmetric key generation. All operations happen securely in your browser with no data sent to any server.
+WebCryptoSuite - A comprehensive online suite for cryptographic functions including algorithm detection, hashing, symmetric encryption, and asymmetric key generation. All operations happen securely in your browser with no data sent to any server.
 
 ## Features
 
@@ -22,7 +22,7 @@ A comprehensive online suite for cryptographic functions including algorithm det
 
 ## Deployment
 
-This application is deployed on Vercel for fast, global access.
+This application is deployed at https://webcryptosuite.vercel.app/ for fast, global access.
 
 ## Security
 
