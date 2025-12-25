@@ -366,11 +366,97 @@
             <section id="manual" class="tab-content hidden fade-in">
                 <header class="mb-6 border-b border-[#2a2a35] pb-4">
                     <h2 class="text-3xl font-bold text-white mb-1 tracking-tighter">SYSTEM_MANUAL</h2>
-                    <span class="type-badge" style="border-color:#888; color:#888; background:rgba(136,136,136,0.1)">DOCUMENTATION</span>
+                    <span class="type-badge" style="border-color:#888; color:#888; background:rgba(136,136,136,0.1)">DOCUMENTATION v14.0</span>
                 </header>
-                <article class="glass-panel p-8 rounded-lg text-gray-300 leading-relaxed max-w-4xl mx-auto border-l-2 border-l-white">
-                    <h3 class="text-lg font-bold text-white mb-4">Secure Client-Side Cryptography</h3>
-                    <p class="mb-4 text-sm">All operations are performed locally using standard JavaScript libraries. No data leaves your browser.</p>
+                
+                <article class="glass-panel p-8 rounded-lg text-gray-300 leading-relaxed max-w-5xl mx-auto border-l-2 border-l-white/50">
+                    
+                    <div class="mb-8 border-b border-gray-800 pb-6">
+                        <h3 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-shield-cat"></i> Zero-Knowledge Architecture</h3>
+                        <p class="text-sm mb-4">
+                            WebCryptoSuite operates under a strict <strong>Client-Side Only</strong> protocol. All cryptographic operations (Hashing, AES encryption, RSA generation) occur locally within your browser's JavaScript engine. 
+                            <br><br>
+                            <span class="text-[#0aff0a] font-bold">>>> NO DATA IS SENT TO ANY SERVER.</span>
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        
+                        <div>
+                            <h4 class="text-[#00f0ff] font-bold text-sm mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-hashtag"></i> CRYPTOGRAPHIC HASHING
+                            </h4>
+                            <p class="text-xs mb-3 text-gray-400">
+                                A hash function takes an input (or 'message') and returns a fixed-size string of bytes. The output is unique to the input. Changing even one letter in the input will drastically change the hash (Avalanche Effect).
+                            </p>
+                            
+
+[Image of cryptographic hash function diagram]
+
+                            <ul class="text-xs space-y-1 list-disc list-inside text-gray-500 marker:text-[#00f0ff]">
+                                <li><strong>SHA-256:</strong> Industry standard. Balanced security/speed.</li>
+                                <li><strong>SHA-512:</strong> Higher security, 512-bit output.</li>
+                                <li><strong>MD5/SHA-1:</strong> Legacy/Broken. Use only for checksums, not security.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="text-[#bd00ff] font-bold text-sm mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-shield-halved"></i> BCRYPT (PASSWORD VAULT)
+                            </h4>
+                            <p class="text-xs mb-3 text-gray-400">
+                                Standard hashing (like SHA-256) is too fast for passwords, making them vulnerable to brute-force attacks. <strong>Bcrypt</strong> is intentionally slow and uses a "Salt" (random data) to ensure two identical passwords do not result in the same hash.
+                            </p>
+                            
+                            <ul class="text-xs space-y-1 list-disc list-inside text-gray-500 marker:text-[#bd00ff]">
+                                <li><strong>Salt:</strong> Random data added to input to prevent Rainbow Table attacks.</li>
+                                <li><strong>Work Factor:</strong> Makes the hash calculation computationally expensive.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="text-[#ff9d00] font-bold text-sm mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-lock"></i> SYMMETRIC ENCRYPTION (AES/RC4)
+                            </h4>
+                            <p class="text-xs mb-3 text-gray-400">
+                                Symmetric encryption uses a <strong>single shared secret key</strong> to both Encrypt (Lock) and Decrypt (Unlock) the data. If the key is lost, the data is unrecoverable. If the key is stolen, the data is compromised.
+                            </p>
+                            
+
+[Image of symmetric encryption diagram]
+
+                            <ul class="text-xs space-y-1 list-disc list-inside text-gray-500 marker:text-[#ff9d00]">
+                                <li><strong>AES:</strong> The global standard for secure data transmission.</li>
+                                <li><strong>Rabbit/RC4:</strong> Stream ciphers (faster, but historically less secure than AES).</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="text-[#0aff0a] font-bold text-sm mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-key"></i> ASYMMETRIC ENCRYPTION (RSA)
+                            </h4>
+                            <p class="text-xs mb-3 text-gray-400">
+                                Uses a mathematical pair of keys: a <strong>Public Key</strong> (shared with everyone) and a <strong>Private Key</strong> (kept secret). Data encrypted with the Public Key can <em>only</em> be decrypted by the Private Key.
+                            </p>
+                            
+
+[Image of asymmetric encryption diagram]
+
+                            <ul class="text-xs space-y-1 list-disc list-inside text-gray-500 marker:text-[#0aff0a]">
+                                <li><strong>Key Gen:</strong> This tool generates 1024-bit key pairs in your browser.</li>
+                                <li><strong>Use Case:</strong> Secure communication channels (like HTTPS/TLS).</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-gray-800">
+                        <h4 class="text-[#ff0099] font-bold text-xs mb-2">⚠️ SECURITY ADVISORY</h4>
+                        <p class="text-[10px] text-gray-500">
+                            While this suite uses robust libraries (CryptoJS, Bcrypt.js), it is a web-based tool. For guarding state secrets, financial data, or critical infrastructure, always use offline, air-gapped, and audited proprietary software. This tool is optimized for education, developers, and quick verification tasks.
+                        </p>
+                    </div>
+
                 </article>
             </section>
 
@@ -380,3 +466,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
